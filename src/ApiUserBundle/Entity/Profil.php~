@@ -1,0 +1,85 @@
+<?php
+
+namespace ApiUserBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\Role\RoleInterface;
+
+/**
+ * Profil
+ *
+ * @ORM\Table(name="profil")
+ * @ORM\Entity(repositoryClass="ApiUserBundle\Repository\ProfilRepository")
+ */
+class Profil implements RoleInterface
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="role", type="string", unique=true, length=100)
+     */
+    private $role;
+
+   /**
+    * @ORM\ManyToMany(targetEntity="ApiUserBundle\Entity\User", mappedBy="profil")
+    */
+   protected $users;
+
+   /**
+    * Profil constructor.
+    * @param $role
+    */
+   public function __construct($role)
+   {
+      $this->role = $role;
+   }
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set role
+     *
+     * @param string $role
+     *
+     * @return Profil
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * Get role
+     *
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    function __toString()
+    {
+       return (string) $this->role;
+    }
+}
+

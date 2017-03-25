@@ -1,0 +1,28 @@
+ApiBundle\Entity\Patient:
+    # Aucune propriété de la classe n’est affichée pendant la sérialisation
+    exclusion_policy: none
+    properties:
+        id:
+            groups: ['patient', 'consultation', 'bilansanguin', 'examenimagerie', 'hospitalisation', 'ordonnance', 'rv', 'soininfirmier' ]
+        firstname:
+            groups: ['patient', 'consultation', 'bilansanguin', 'examenimagerie', 'hospitalisation', 'ordonnance', 'rv', 'soininfirmier' ]
+        lastname:
+            groups: ['patient', 'consultation', 'bilansanguin', 'examenimagerie', 'hospitalisation', 'ordonnance', 'rv', 'soininfirmier' ]
+        adresse:
+            groups: ['patient', 'consultation', 'bilansanguin', 'examenimagerie', 'hospitalisation', 'ordonnance', 'rv', 'soininfirmier' ]
+        dateNaissance:
+            groups: ['patient', 'consultation', 'bilansanguin', 'examenimagerie', 'hospitalisation', 'ordonnance', 'rv', 'soininfirmier' ]
+        consultations:
+            groups: ['patient']
+        bilansanguins:
+            groups: ['patient']
+        examenimageries:
+            groups: ['patient']
+        hospitalisations:
+            groups: ['patient']
+        ordonnances:
+            groups: ['patient']
+        rvs:
+            groups: ['patient']
+        soininfirmiers:
+            groups: ['patient']

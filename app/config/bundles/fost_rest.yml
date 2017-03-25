@@ -1,0 +1,31 @@
+# Permet d'utiliser des routes API automatiquement et de retourner des requête
+fos_rest:
+    serializer:
+        # Serialiser les attributs null
+        serialize_null: true
+    routing_loader:
+        default_format:  json
+        include_format: false
+    view:
+        view_response_listener: true
+        formats:
+            json: true
+            xml: true
+    zone:
+        - { path: ^/api }
+    format_listener:
+        rules:
+            - { path: '^/api', priorities: ['json', 'xml'], fallback_format: 'json', prefer_extension: false}
+    body_listener:
+        enabled: true
+    # Activation des query strings
+    param_fetcher_listener:
+        enabled: true
+    exception:
+        enabled: true
+        ## Les exceptions à autoriser en mod prod
+        messages:
+            'Symfony\Component\HttpKernel\Exception\HttpException' : true
+            'Symfony\Component\Security\Core\Exception\BadCredentialsException': true
+        codes:
+            'Symfony\Component\Security\Core\Exception\BadCredentialsException': 401

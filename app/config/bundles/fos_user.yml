@@ -1,0 +1,7 @@
+fos_user:
+    db_driver: orm
+    firewall_name: api
+    user_class: ApiUserBundle\Entity\User
+    from_email:
+        address: bobodiallobe@gmail.com
+        sender_name: bobo

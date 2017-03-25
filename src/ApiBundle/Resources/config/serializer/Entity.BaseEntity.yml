@@ -1,0 +1,3 @@
+ApiBundle\Entity\BaseEntity:
+    # Aucune propriété de la classe n’est affichée pendant la sérialisation
+    exclusion_policy: none

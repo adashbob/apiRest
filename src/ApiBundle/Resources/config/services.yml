@@ -1,0 +1,6 @@
+parameters:
+
+services:
+    data_fixtures.provider.patient:
+        class: ApiBundle\DataFixtures\Faker\Provider\PatientProvider
+        tags: [ { name: nelmio_alice.faker.provider } ]

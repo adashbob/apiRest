@@ -1,0 +1,13 @@
+jms_serializer:
+    handlers:
+        datetime:
+            default_format: "Y-m-d\\TH:i:sP"
+            default_timezone: "UTC"
+    # Pour serializer les propriétes d'une class mère pendant la serialisation de la class fille
+    # par (FOS\UserBundle\Model\User et ApiUserBundle\Entity\User), il faut proceder comme suit
+    metadata:
+        auto_detection: true
+        directories:
+            FOSUserBundle:
+                namespace_prefix: "FOS\\UserBundle"
+                path: "@ApiUserBundle/Resources/config/serializer/fos"

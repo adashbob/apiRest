@@ -1,0 +1,7 @@
+ApiUserBundle\Entity\Role:
+    exclusion_policy: none
+    properties:
+        role:
+            groups: ['role', 'user']
+        users:
+            groups: ['role']

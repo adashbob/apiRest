@@ -1,0 +1,7 @@
+ApiUserBundle\Entity\User:
+    exclusion_policy: none
+    properties:
+        id:
+            groups: ['user', 'role']
+        profils:
+            groups: ['user']

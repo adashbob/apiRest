@@ -1,0 +1,12 @@
+ApiUserBundle\Entity\Role:
+    role1:
+        __construct:
+            0 (unique): ROLE_ADMIN
+
+    role2:
+        __construct:
+            0 (unique): ROLE_CONS
+
+    role3:
+        __construct:
+            0 (unique): ROLE_LABO

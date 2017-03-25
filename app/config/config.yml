@@ -1,0 +1,50 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+
+    # Imports config bundles
+    - { resource: bundles/twig.yml }
+    - { resource: bundles/doctrine.yml }
+    - { resource: bundles/swiftmailer.yml }
+    - { resource: bundles/fos_user.yml }
+    - { resource: bundles/fost_rest.yml }
+    - { resource: bundles/jms_serializer.yml }
+    - { resource: bundles/fos_oauth_server.yml }
+    - { resource: bundles/nelmio_cores.yml }
+    - { resource: bundles/nelmio_api_doc.yml }
+
+    # Imports Services config of bundles
+    - { resource: "@ApiBundle/Resources/config/services.yml" }
+    - { resource: "@ApiUserBundle/Resources/config/services.yml" }
+
+parameters:
+    locale: en
+
+framework:
+    #esi:             ~
+    #translator:      { fallbacks: ["%locale%"] }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    #serializer:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id:  session.handler.native_file
+        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+    fragments:       ~
+    http_method_override: true
+    assets: ~
+    php_errors:
+        log: true
+
+

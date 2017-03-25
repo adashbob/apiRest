@@ -1,0 +1,9 @@
+ApiBundle\Entity\Consultation:
+    exclusion_policy: none
+    properties:
+        id:
+            groups: ['patient', 'consultation']
+        description:
+            groups: ['patient', 'consultation']
+        patient:
+            groups: ['consultation']

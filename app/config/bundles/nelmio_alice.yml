@@ -1,0 +1,5 @@
+# app/config/config_dev.yml
+
+## Fixture bundle
+#hautelook_alice:
+#    fixtures_path: 'ApiBundle/Resources/fixtures/orm'

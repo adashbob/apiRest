@@ -1,0 +1,8 @@
+ApiBundle\Entity\Patient:
+    patient{1..4}:
+        firstname: <patientFirstNames(<current()>)>
+        lastname: <patientLasttNames(<current()>)>
+        adresse: <patientAdresse(<current()>)>
+        telephone: <e164PhoneNumber()>
+        dateNaissance: <birthDay(<current()>)>
+#        dateNaissance: <date('Y-m-d')>
