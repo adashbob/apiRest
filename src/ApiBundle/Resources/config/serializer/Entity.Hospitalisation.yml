@@ -1,0 +1,9 @@
+ApiBundle\Entity\Hospitalisation:
+    exclusion_policy: none
+    properties:
+        id:
+            groups: ['patient', 'hospitalisation']
+        isPaid:
+            groups: ['patient', 'hospitalisation']
+        patient:
+            groups: ['hospitalisation']

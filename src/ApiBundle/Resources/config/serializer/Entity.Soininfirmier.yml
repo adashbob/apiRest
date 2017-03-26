@@ -1,0 +1,9 @@
+ApiBundle\Entity\Soininfirmier:
+    exclusion_policy: none
+    properties:
+        id:
+            groups: ['patient', 'soininfirmier']
+        isPaid:
+            groups: ['patient', 'soininfirmier']
+        patient:
+            groups: ['soininfirmier']

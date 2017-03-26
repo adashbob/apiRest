@@ -1,0 +1,9 @@
+ApiBundle\Entity\Ordonnance:
+    exclusion_policy: none
+    properties:
+        id:
+            groups: ['patient', 'ordonnance']
+        isPaid:
+            groups: ['patient', 'ordonnance']
+        patient:
+            groups: ['ordonnance']

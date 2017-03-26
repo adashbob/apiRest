@@ -1,0 +1,9 @@
+ApiBundle\Entity\Rv:
+    exclusion_policy: none
+    properties:
+        id:
+            groups: ['patient', 'rv']
+        isPaid:
+            groups: ['patient', 'rv']
+        patient:
+            groups: ['rv']

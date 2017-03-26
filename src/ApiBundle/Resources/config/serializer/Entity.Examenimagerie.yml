@@ -1,0 +1,9 @@
+ApiBundle\Entity\Examenimagerie:
+    exclusion_policy: none
+    properties:
+        id:
+            groups: ['patient', 'examenimagerie']
+        isPaid:
+            groups: ['patient', 'examenimagerie']
+        patient:
+            groups: ['examenimagerie']

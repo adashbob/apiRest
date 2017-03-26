@@ -1,0 +1,11 @@
+ApiBundle\Entity\Bilansanguin:
+    exclusion_policy: none
+    properties:
+        id:
+            groups: ['patient', 'bilansanguin']
+        isPaid:
+            groups: ['patient', 'bilansanguin']
+        laboratoire:
+            groups: ['patient', 'bilansanguin']
+        patient:
+            groups: ['bilansanguin']

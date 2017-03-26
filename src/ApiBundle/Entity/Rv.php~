@@ -1,0 +1,40 @@
+<?php
+
+namespace ApiBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Rv
+ *
+ * @ORM\Table(name="rv")
+ * @ORM\Entity(repositoryClass="ApiBundle\Repository\RvRepository")
+ */
+class Rv extends BaseEntity
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="rv_id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+   /**
+    * @ORM\ManyToOne(targetEntity="ApiBundle\Entity\Patient", inversedBy="consultations")
+    * @ORM\JoinColumn(name="patient_id", referencedColumnName="pt_id", nullable=false)
+    */
+   private $patient;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}
+
