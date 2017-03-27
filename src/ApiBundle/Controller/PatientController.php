@@ -37,23 +37,9 @@ class PatientController extends Controller
       $limit = $paramFetcher->get('limit');
       $sort = $paramFetcher->get('sort');
 
-      $qb = $this->get('doctrine.orm.entity_manager')->createQueryBuilder();
-      $qb->select('p')
-         ->from('ApiBundle:Patient', 'p');
-
-      if ($offset != "")
-         $qb->setFirstResult($offset);
-
-      if($limit != "")
-         $qb->setMaxResults($limit);
-
-      if (in_array($sort, ['asc', 'desc'])) {
-         $qb->orderBy('p.lastname', $sort);
-      }
-
-      $patients = $qb->getQuery()->getResult();
-
-      return $patients;
+      return $this->getDoctrine()
+         ->getRepository('ApiBundle:Patient')
+         ->getPatientsOffsetLimit($offset, $limit, $sort);
    }
 
    /**
@@ -93,7 +79,6 @@ class PatientController extends Controller
       $patient = new Patient();
 
       $form = $this->createForm(PatientType::class, $patient);
-
       $form->submit($request->request->all());
 
       if($form->isValid()){

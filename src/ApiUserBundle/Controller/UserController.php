@@ -2,6 +2,7 @@
 
 namespace ApiUserBundle\Controller;
 
+use ApiUserBundle\Form\UserType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcher;
@@ -15,7 +16,6 @@ use ApiUserBundle\Entity\User;
 
 class UserController extends Controller
 {
-
    /**
     * @ApiDoc(
     *    description="Récupère la liste des users de l'application",
@@ -36,26 +36,13 @@ class UserController extends Controller
       $limit = $paramFetcher->get('limit');
       $sort = $paramFetcher->get('sort');
 
-      $qb = $this->get('doctrine.orm.entity_manager')->createQueryBuilder();
-      $qb->select('u')
-         ->from('ApiUserBundle:User', 'u');
-
-      if (!empty($offset))
-         $qb->setFirstResult($offset);
-
-      if(!empty($limit))
-         $qb->setMaxResults($limit);
-
-      if (in_array($sort, ['asc', 'desc'])) {
-         $qb->orderBy('p.username', $sort);
-      }
-
-      $users = $qb->getQuery()->getResult();
-
-      return $users;
+      return $this->getDoctrine()
+         ->getRepository('ApiUserBundle:User')
+         ->getUsersOffsetLimit($offset, $limit, $sort);
    }
 
    /**
+    * Return user by id
     *
     * @Rest\View(serializerGroups={"user"})
     * @Rest\Get("/users/{id}")
@@ -72,6 +59,8 @@ class UserController extends Controller
    }
 
    /**
+    * Remove User
+    *
     * @Rest\View(StatusCode=Response::HTTP_NO_CONTENT, serializerGroups={"user"})
     * @Rest\Delete("/users/{id}")
     */
@@ -83,8 +72,81 @@ class UserController extends Controller
       if(!$user)
          throw new NotFoundHttpException("User not found");
 
+      $access_tokens =  $this->getDoctrine()->getRepository('ApiUserBundle:AccessToken')->findAll();
+      $auth_codes =  $this->getDoctrine()->getRepository('ApiUserBundle:AuthCode')->findAll();
+      $refresh_tokens =  $this->getDoctrine()->getRepository('ApiUserBundle:RefreshToken')->findAll();
+
+      foreach ($access_tokens as $access_token) {
+         if($access_token->getUser() == $user)
+            $em->remove($access_token);
+      }
+      foreach ($auth_codes as $auth_code) {
+         if($auth_code->getUser() == $user)
+            $em->remove($auth_code);
+      }
+      foreach ($refresh_tokens as $refresh_token) {
+         if($refresh_token->getUser() == $user)
+            $em->remove($refresh_token);
+      }
       $em->remove($user);
+
       $em->flush();
+   }
+
+   /**
+    * Add un user
+    *
+    * @param Request $request
+    * @return User|\FOS\UserBundle\Model\UserInterface|mixed|\Symfony\Component\Form\Form
+    *
+    * @Rest\View(StatusCode=Response::HTTP_CREATED, serializerGroups={"user"})
+    * @Rest\Post("/users")
+    */
+   public function postUserAction(Request $request)
+   {
+      $user = new User();
+
+      $form = $this->createForm(UserType::class, $user);
+      $form->submit($request->request->all());
+
+      if($form->isValid()){
+         $this->get('fos_user.user_manager')->updateUser($user);
+         return $user;
+      }
+      else
+      {
+         return $form;
+      }
+   }
+
+   /**
+    * Update Uer
+    *
+    * @param Request $request
+    * @return \Symfony\Component\Form\Form
+    *
+    * @Rest\View(serializerGroups={"user"})
+    * @Rest\Patch("/users/{id}")
+    */
+   public function patchUserAction(Request $request)
+   {
+      $userManager = $this->get('fos_user.user_manager');
+      $em = $this->get('doctrine.orm.entity_manager');
+      $user = $em->getRepository('ApiUserBundle:User')->find($request->get('id'));
+
+      if(empty($user))
+         throw new NotFoundHttpException('User is not exist');
+
+      $form  = $this->createForm(UserType::class, $user);
+      $form->submit($request->request->all(), false);
+
+      if($form->isValid())
+      {
+         $userManager->updateCanonicalFields($user);
+         $userManager->updateUser($user);
+         return $user;
+      }
+      return $form;
    }
 
 }

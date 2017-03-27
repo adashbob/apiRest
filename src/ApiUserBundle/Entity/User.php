@@ -8,7 +8,7 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="ApiUserBundle\Repository\UserRepository")
  * @ORM\Table(name="security_users")
  */
 class User extends BaseUser
@@ -33,6 +33,7 @@ class User extends BaseUser
    {
       parent::__construct();
       $this->profils = new ArrayCollection();
+      $this->enabled = true;
    }
 
    /**

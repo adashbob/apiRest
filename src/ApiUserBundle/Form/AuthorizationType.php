@@ -3,12 +3,11 @@
 namespace ApiUserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserType extends AbstractType
+class AuthorizationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -17,9 +16,7 @@ class UserType extends AbstractType
     {
         $builder
            ->add('username', TextType::class)
-           ->add('email', EmailType::class)
-           ->add('plainPassword', TextType::class);
-           //->add('profils');
+           ->add('role', TextType::class);
     }
     
     /**
@@ -28,7 +25,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'ApiUserBundle\Entity\User',
+            'data_class' => 'ApiUserBundle\Entity\Authorization',
            'csrf_protection' => false
         ));
     }
@@ -38,7 +35,7 @@ class UserType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'apiuserbundle_user';
+        return 'apiuserbundle_authorization';
     }
 
 

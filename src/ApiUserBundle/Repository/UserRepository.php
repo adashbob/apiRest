@@ -1,6 +1,8 @@
 <?php
 
 namespace ApiUserBundle\Repository;
+use ApiUserBundle\Entity\Authorization;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * UserRepository
@@ -10,4 +12,76 @@ namespace ApiUserBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+   /**
+    * @param $offset
+    * @param $limit
+    * @param $sort
+    * @return array
+    */
+   public function getUsersOffsetLimit($offset, $limit, $sort)
+   {
+      $qb = $this->createQueryBuilder('u');
+
+      if (!empty($offset))
+         $qb->setFirstResult($offset);
+
+      if(!empty($limit))
+         $qb->setMaxResults($limit);
+
+      if (in_array($sort, ['asc', 'desc'])) {
+         $qb->orderBy('u.username', $sort);
+      }
+
+      return $qb->getQuery()->getResult();
+   }
+
+   /**
+    * Remove user's role
+    *
+    * @param $authorization
+    * @return mixed
+    */
+   public function removeAuthorization(Authorization $authorization)
+   {
+      if(!$authorization)
+         throw new NotFoundHttpException(" Username or role can't be null");
+
+      $query = "DELETE FROM security_users_roles 
+                WHERE role_id = (SELECT id FROM security_roles WHERE role = :role) 
+                AND user_id = (SELECT id FROM security_users WHERE username = :username)";
+
+      $statement = $this->getEntityManager()
+         ->getConnection()
+         ->prepare($query);
+
+      $statement->bindValue(':role', $authorization->getRole());
+      $statement->bindValue(':username', $authorization->getUsername());
+      $statement->execute();
+      return $statement->rowCount();
+   }
+
+   /**
+    * Remove user's role
+    *
+    * @param $authorization
+    * @return mixed
+    */
+   public function addAuthorization(Authorization $authorization)
+   {
+      if(!$authorization)
+         throw new NotFoundHttpException(" Username or role can't be null");
+
+      $query = "INSERT INTO security_users_roles SET  
+                role_id = (SELECT id FROM security_roles WHERE role = :role), 
+                user_id = (SELECT id FROM security_users WHERE username = :username)";
+
+      $statement = $this->getEntityManager()
+         ->getConnection()
+         ->prepare($query);
+
+      $statement->bindValue(':role', $authorization->getRole());
+      $statement->bindValue(':username', $authorization->getUsername());
+      $statement->execute();
+      return $statement->rowCount();
+   }
 }

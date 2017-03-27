@@ -10,4 +10,26 @@ namespace ApiBundle\Repository;
  */
 class PatientRepository extends \Doctrine\ORM\EntityRepository
 {
+   /**
+    * @param $offset
+    * @param $limit
+    * @param $sort
+    * @return array
+    */
+   public function getPatientsOffsetLimit($offset, $limit, $sort)
+   {
+      $qb = $this->createQueryBuilder('p');
+
+      if ($offset != "")
+         $qb->setFirstResult($offset);
+
+      if ($limit != "")
+         $qb->setMaxResults($limit);
+
+      if (in_array($sort, ['asc', 'desc'])) {
+         $qb->orderBy('p.lastname', $sort);
+      }
+
+      return $qb->getQuery()->getResult();;
+   }
 }

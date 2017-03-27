@@ -10,9 +10,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Patient
  *
+ * @ORM\Entity(repositoryClass="ApiBundle\Repository\PatientRepository")
  * @ORM\Table(name="patient",
  *    uniqueConstraints={@ORM\UniqueConstraint(name="pt_patient_unique", columns={"pt_firstname", "pt_lastname", "pt_adresse", "pt_telephone", "pt_date_naissance"})})
- * @ORM\Entity(repositoryClass="ApiBundle\Repository\PatientRepository")
  * @Serializer\ExclusionPolicy("all")
  */
 class Patient extends BaseEntity
